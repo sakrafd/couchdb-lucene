@@ -95,6 +95,9 @@ public class Main {
         info.setLucene(lucene);
         setupContext(contexts, "/info", info);
 
+        final HeartbeatServlet heartbeat = new HeartbeatServlet();
+        setupContext(contexts, "/heartbeat", heartbeat);
+
         final AdminServlet admin = new AdminServlet();
         admin.setLucene(lucene);
         setupContext(contexts, "/admin", admin);
