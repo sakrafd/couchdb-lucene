@@ -37,7 +37,7 @@ You will now have a zip file in the target/ directory. This contains all the cou
 os_process_timeout=60000 ; increase the timeout from 5 seconds.
 
 [external]
-fti=/path/to/python /usr/lib/couchdb/couchdb-lucene/couchdb-external-hook.py
+fti=/path/to/python /path/to/couchdb-lucene/tools/couchdb-external-hook.py
 
 [httpd_db_handlers]
 _fti = {couch_httpd_external, handle_external_req, <<"fti">>}
@@ -156,6 +156,7 @@ Lucene has numerous ways of converting free-form text into tokens, these classes
 <li>french</li>
 <li>german</li>
 <li>keyword</li>
+<li>perfield</li>
 <li>porter</li>
 <li>russian</li>
 <li>simple</li>
@@ -164,6 +165,28 @@ Lucene has numerous ways of converting free-form text into tokens, these classes
 </ul>
 
 Note: You must also supply analyzer=<analyzer_name> as a query parameter to ensure that queries are processed correctly.
+
+The "perfield" option lets you use a different analyzer for different fields and is configured as follows;
+
+<pre>
+?analyzer=perfield:{field_name:"analyzer_name"}
+</pre>
+
+Unless overridden, any field name not specified will be handled by the standard analyzer. To change the default, use the special default field name;
+
+<pre>
+?analyzer=perfield:{default:"keyword"}
+</pre>
+
+You should also specify the analyzer in your ddoc too;
+
+<pre>
+"fulltext": {
+  "idx": {
+    "analyzer": "perfield:{default:\"keyword\"}"
+  }
+}
+</pre>
 
 <h3>The Document class</h3>
 
